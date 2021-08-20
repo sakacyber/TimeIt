@@ -40,10 +40,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         stopwatch = new Stopwatch();
-        stopwatch.setDebugMode(true);
         time = findViewById(R.id.time);
-        stopwatch.setTextView(time);
         splitLog = findViewById(R.id.split_log);
+
+        stopwatch.setDebugMode(true);
+        stopwatch.setTextView(time);
         stopwatch.setOnTickListener(this);
         stopwatch.setClockDelay(50);
     }
