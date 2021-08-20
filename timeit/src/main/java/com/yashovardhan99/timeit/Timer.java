@@ -40,6 +40,8 @@ public class Timer {
     private Timer.OnTickListener onTickListener;
     private boolean debugMode;
 
+    private boolean isShowMilli = false;
+
     /**
      * The default constructor used to create an instance of Timer. Duration is set to a default value of 0 which should be changed before calling start.
      *
@@ -127,11 +129,14 @@ public class Timer {
      * @param duration the duration in milliseconds for which you want to set the timer
      * @since 1.2
      */
-    public void setDuration(long duration) {
+    public Timer setDuration(long duration) {
         this.duration = duration;
+        return this;
     }
 
-    /** Returns true if debug mode is enabled
+    /**
+     * Returns true if debug mode is enabled
+     *
      * @return the current boolean status of debug mode
      * @since 1.2
      */
@@ -140,7 +145,9 @@ public class Timer {
         return debugMode;
     }
 
-    /** Set debug mode to print debug log messages in the logcat
+    /**
+     * Set debug mode to print debug log messages in the logcat
+     *
      * @param debugMode the boolean status to set the debug mode
      */
     @SuppressWarnings("unused")
@@ -154,8 +161,22 @@ public class Timer {
      * @param textView the textView to update every clock tick.
      * @since 1.2
      */
-    public void setTextView(@Nullable TextView textView) {
+    public Timer setTextView(@Nullable TextView textView) {
         this.textView = textView;
+        return this;
+    }
+
+    /**
+     * Used to set the textView which is auto-updated every clock tick.
+     *
+     * @param textView the textView to update every clock tick.
+     * @param format   the format pattern to show on text.
+     * @since 1.2
+     */
+    public Timer setTextView(@Nullable TextView textView, boolean showMilli) {
+        this.textView = textView;
+        this.isShowMilli = showMilli;
+        return this;
     }
 
     /**
@@ -165,8 +186,9 @@ public class Timer {
      * @see OnTickListener
      * @since 1.2
      */
-    public void setOnTickListener(OnTickListener onTickListener) {
+    public Timer setOnTickListener(OnTickListener onTickListener) {
         this.onTickListener = onTickListener;
+        return this;
     }
 
     /**
@@ -214,21 +236,21 @@ public class Timer {
 
     private void onTick(Stopwatch stopwatch) {
 
-        if(debugMode)
-            Log.d("TIMER","Elapsed : "+stopwatch.getElapsedTime()+"; Remaining : "+(duration-stopwatch.getElapsedTime()));
+        if (debugMode)
+            Log.d("TIMER", "Elapsed : " + stopwatch.getElapsedTime() + "; Remaining : " + (duration - stopwatch.getElapsedTime()));
 
         if (onTickListener != null)
             onTickListener.onTick(this);
 
         if (stopwatch.getElapsedTime() >= duration) {
-            textView.setText(Stopwatch.getFormattedTime(0));
+            textView.setText(Stopwatch.getFormattedTime(0, isShowMilli));
             stopwatch.stop();
 
             if (onTickListener != null)
                 onTickListener.onComplete(this);
         } else {
             if (textView != null)
-                textView.setText(Stopwatch.getFormattedTime(duration - stopwatch.getElapsedTime()));
+                textView.setText(Stopwatch.getFormattedTime(duration - stopwatch.getElapsedTime(), isShowMilli));
         }
     }
 

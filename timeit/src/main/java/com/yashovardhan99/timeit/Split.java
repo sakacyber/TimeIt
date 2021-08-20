@@ -27,6 +27,7 @@ import androidx.annotation.RestrictTo;
  * @since 1.0
  */
 public class Split {
+
     private long splitTime, lapTime;
 
     /**

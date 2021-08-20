@@ -20,11 +20,11 @@ import android.os.Handler;
 import android.util.Log;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.LinkedList;
-
-import androidx.annotation.Nullable;
 
 /**
  * The Stopwatch class is used for creating and using a simple stopwatch with basic features like : start, pause, resume and split.
@@ -39,13 +39,16 @@ import androidx.annotation.Nullable;
  * @see java.lang.Runnable
  */
 public class Stopwatch {
-    private LinkedList<Split> splits;
+
+    private final LinkedList<Split> splits;
     private TextView textView;
     private long start, current, elapsedTime, lapTime;
     private boolean started, paused, logEnabled;
-    private OnTickListener onTickListener;
     private long clockDelay;
-    private Handler handler;
+    private OnTickListener onTickListener;
+    private final Handler handler;
+
+    private boolean isShowMilli = true;
 
     /**
      * The runnable used to call the thread.
@@ -81,24 +84,34 @@ public class Stopwatch {
      * @return formatted time in String form
      * @since 1.1
      */
-    static String getFormattedTime(long elapsedTime) {
+    static String getFormattedTime(long elapsedTime, boolean showMilli) {
+
         final StringBuilder displayTime = new StringBuilder();
 
-        int milliseconds = (int) ((elapsedTime % 1000) / 10);
+        int milliseconds = (int) (elapsedTime % 1000);
         int seconds = (int) ((elapsedTime / 1000) % 60);
         int minutes = (int) (elapsedTime / (60 * 1000) % 60);
         int hours = (int) (elapsedTime / (60 * 60 * 1000));
 
         NumberFormat f = new DecimalFormat("00");
+        NumberFormat fs = new DecimalFormat("000");
 
-        if (minutes == 0)
-            displayTime.append(f.format(seconds)).append('.').append(f.format(milliseconds));
-
-        else if (hours == 0)
-            displayTime.append(f.format(minutes)).append(":").append(f.format(seconds)).append('.').append(f.format(milliseconds));
-
+        if (hours == 0)
+            displayTime
+                    .append(f.format(minutes))
+                    .append(":")
+                    .append(f.format(seconds));
         else
-            displayTime.append(hours).append(":").append(f.format(minutes)).append(":").append(f.format(seconds));
+            displayTime.append(hours)
+                    .append(":")
+                    .append(f.format(minutes))
+                    .append(":")
+                    .append(f.format(seconds));
+
+        if (showMilli)
+            displayTime
+                    .append('.')
+                    .append(fs.format(milliseconds));
 
         return displayTime.toString();
     }
@@ -170,11 +183,13 @@ public class Stopwatch {
      * Clock delay is the delay in between each successive clock update.
      *
      * @param clockDelay clock delay in milliseconds (default : 100ms)
+     * @return Stopwatch
      * @see Thread#sleep(long)
      * @since 1.0
      */
-    public void setClockDelay(long clockDelay) {
+    public Stopwatch setClockDelay(long clockDelay) {
         this.clockDelay = clockDelay;
+        return this;
     }
 
     /**
@@ -192,20 +207,39 @@ public class Stopwatch {
      * If not provided, or set to null, you need to manually display the time.
      *
      * @param textView the textView where you want to display the stopwatch time. Can be null.
+     * @return Stopwatch
      * @since 1.0
      */
-    public void setTextView(@Nullable TextView textView) {
+    public Stopwatch setTextView(@Nullable TextView textView) {
         this.textView = textView;
+        return this;
+    }
+
+    /**
+     * Allows you to set a textView where the stopwatch time is displayed.
+     * If not provided, or set to null, you need to manually display the time.
+     *
+     * @param textView  the textView where you want to display the stopwatch time. Can be null.
+     * @param showMilli set true to show millisecond.
+     * @return Stopwatch
+     * @since 1.0
+     */
+    public Stopwatch setTextView(@Nullable TextView textView, boolean showMilli) {
+        this.textView = textView;
+        this.isShowMilli = showMilli;
+        return this;
     }
 
     /**
      * Set an OnTickListener to listen for clock changes.
      *
      * @param onTickListener a reference to the interface implementation.
+     * @return Stopwatch
      * @since 1.0
      */
-    public void setOnTickListener(OnTickListener onTickListener) {
+    public Stopwatch setOnTickListener(OnTickListener onTickListener) {
         this.onTickListener = onTickListener;
+        return this;
     }
 
     /**
@@ -341,7 +375,7 @@ public class Stopwatch {
             onTickListener.onTick(this);
 
         if (textView != null) {
-            String displayTime = getFormattedTime(elapsedTime);
+            String displayTime = getFormattedTime(elapsedTime, isShowMilli);
             textView.setText(displayTime);
         }
     }
@@ -356,8 +390,9 @@ public class Stopwatch {
     public interface OnTickListener {
         /**
          * Called every time the clock 'ticks'. The stopwatch ticks after a delay of 100ms (or as specified).
-         * @since 1.2
+         *
          * @param stopwatch Reference to the currently calling stopwatch.
+         * @since 1.2
          */
         void onTick(Stopwatch stopwatch);
     }
