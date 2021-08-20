@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="timeit-demo/src/main/res/layout/activity_main.xml" value="0.328125" />
+        <entry key="timeit-demo/src/main/res/layout/activity_timer_demo.xml" value="0.328125" />
       </map>
     </option>
   </component>

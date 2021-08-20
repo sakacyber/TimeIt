@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~    Copyright 2018  Yashovardhan Dhanania
   ~
   ~    Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,27 +22,27 @@
     tools:context=".MainActivity">
 
     <TextView
+        android:id="@+id/time"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         android:text="Tap start to start"
         android:textAlignment="center"
         android:textSize="48sp"
-        android:id="@+id/time"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.button.MaterialButton
+        android:id="@+id/start"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Start"
-        android:id="@+id/start"
-        app:layout_constraintTop_toBottomOf="@id/time"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="8dp"
         android:onClick="onClick"
-        android:layout_margin="8dp"/>
+        android:text="Start"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/time" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/stop"
@@ -52,65 +51,67 @@
         android:layout_margin="8dp"
         android:onClick="onClick"
         android:text="Stop"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/pause"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/start" />
 
     <com.google.android.material.button.MaterialButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Pause"
         android:id="@+id/pause"
-        app:layout_constraintTop_toBottomOf="@id/start"
-        app:layout_constraintStart_toEndOf="@id/stop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:onClick="onClick"
+        android:text="Pause"
         app:layout_constraintEnd_toStartOf="@id/resume"
-        android:onClick="onClick"
-        android:layout_margin="8dp"/>
+        app:layout_constraintStart_toEndOf="@id/stop"
+        app:layout_constraintTop_toBottomOf="@id/start" />
 
     <com.google.android.material.button.MaterialButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Resume"
         android:id="@+id/resume"
-        app:layout_constraintTop_toBottomOf="@id/start"
-        app:layout_constraintStart_toEndOf="@id/pause"
-        app:layout_constraintEnd_toStartOf="@id/split"
-        android:onClick="onClick"
-        android:layout_margin="8dp"/>
-
-    <com.google.android.material.button.MaterialButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Split"
-        android:id="@+id/split"
-        app:layout_constraintTop_toBottomOf="@id/start"
-        app:layout_constraintStart_toEndOf="@id/resume"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_margin="8dp"
         android:onClick="onClick"
-        android:layout_margin="8dp"/>
+        android:text="Resume"
+        app:layout_constraintEnd_toStartOf="@id/split"
+        app:layout_constraintStart_toEndOf="@id/pause"
+        app:layout_constraintTop_toBottomOf="@id/start" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/split"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:onClick="onClick"
+        android:text="Split"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/resume"
+        app:layout_constraintTop_toBottomOf="@id/start" />
 
     <ScrollView
+        android:id="@+id/split_scroller"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/split"
+        android:padding="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:padding="16dp"
-        android:id="@+id/split_scroller">
+        app:layout_constraintTop_toBottomOf="@id/split">
+
         <TextView
+            android:id="@+id/split_log"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:id="@+id/split_log"/>
+            android:textAlignment="center" />
     </ScrollView>
 
     <com.google.android.material.button.MaterialButton
+        android:id="@+id/switch_to_timer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:text="Switch to Timer"
         android:onClick="onClick"
-        android:id="@+id/switch_to_timer"/>
+        android:text="Switch to Timer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
